@@ -2,11 +2,9 @@
  :deps {org.clojure/clojure {:mvn/version "1.10.3"}}
  :aliases
  {:run-m {:main-opts ["-m" "tweets-to-roam.tweets-to-roam"]}
-  :run-x {:ns-default tweets-to-roam.tweets-to-roam
-          :exec-fn greet
-          :exec-args {:name "Clojure"}}
   :test {:extra-paths ["test"]
          :extra-deps {org.clojure/test.check {:mvn/version "1.1.0"}}}
+  
   :runner
   {:extra-deps {com.cognitect/test-runner
                 {:git/url "https://github.com/cognitect-labs/test-runner"
