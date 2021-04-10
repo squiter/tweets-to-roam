@@ -4,4 +4,4 @@
 
 (deftest main
   (testing "returns nil"
-    (is (nil? (-main "test")))))
+    (is (nil? (-main "/dev/null")))))
