@@ -1,71 +1,79 @@
 # tweets-to-roam
 
-FIXME: my new application.
-
-## Installation
-
-Download from https://github.com/tweets-to-roam/tweets-to-roam
+This project was built to format the Twitter data on a importable
+format for [Roamresearch](http://roamresearch.com).
 
 ## Usage
 
-FIXME: explanation
+First you need to [ask Twitter for your
+data](https://help.twitter.com/en/managing-your-account/how-to-download-your-twitter-archive),
+and them you can start to use this project.
+
+After get your data you can clone this project:
+
+```
+git clone git@github.com:squiter/tweets-to-roam
+cd tweets-to-roam
+```
+
+### Generating the CSV file
+
+To generate the CSV you can use a helper function of this project:
+
+```shell
+bin/generate-csv <unziped-twitter-data>/data/tweets.js generated.csv
+```
+
+Arguments:
+1. The `tweet.js` file from Twitter
+1. The file that you'll use in the next step
+
+#### Customizing the content of the CSV
+
+In this `bin/generate-csv` you have a lot of `grep -v` statements, you
+can add anything that you want to exclude for the CSV in a new line.
+
+It's important to notice that the default file is customized for **my
+usage!**.
+
+### Generating the Roamresearch's compatible json
 
 Run the project directly, via `:exec-fn`:
 
-    $ clojure -X:run-x
-    Hello, Clojure!
+```shell
+clojure -X:run-m <unziped-twitter-data/data/tweet.js> > file-to-import.json
+```
 
-Run the project, overriding the name to be greeted:
+This command will generate a json file with this format:
 
-    $ clojure -X:run-x :name '"Someone"'
-    Hello, Someone!
+```json
+[
+  {
+    "title": "September 9th, 2008",
+    "children": [
+      {
+        "string": "21:56 Your tweets #[[My Tweets]]"
+      },
+      {
+        "string": "22:01 Other tweet for the same day. #[[My Tweets]]"
+      }
+    ]
+  },
+  {
+    "title": "September 5th, 2008",
+    "children": [
+      {
+        "string": "09:01 another day tweet #[[My Tweets]]"
+      }
+    ]
+  }
+]
+```
+### Importing your file into Roamresearch
 
-Run the project directly, via `:main-opts` (`-m tweets-to-roam.tweets-to-roam`):
+The import process is the default of Roamresearch, you only need to
+click on the `...` button and follow the instructions.
 
-    $ clojure -M:run-m
-    Hello, World!
-
-Run the project, overriding the name to be greeted:
-
-    $ clojure -M:run-m Via-Main
-    Hello, Via-Main!
-
-Run the project's tests (they'll fail until you edit them):
-
-    $ clojure -M:test:runner
-
-Build an uberjar:
-
-    $ clojure -X:uberjar
-
-This will update the generated `pom.xml` file to keep the dependencies synchronized with
-your `deps.edn` file. You can update the version (and SCM tag) information in the `pom.xml` using the
-`:version` argument:
-
-    $ clojure -X:uberjar :version '"1.2.3"'
-
-If you don't want the `pom.xml` file in your project, you can remove it, but you will
-also need to remove `:sync-pom true` from the `deps.edn` file (in the `:exec-args` for `depstar`).
-
-Run that uberjar:
-
-    $ java -jar tweets-to-roam.jar
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
 
 ## License
 
