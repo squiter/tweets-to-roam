@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# TODO: this script is returning 10k lines, it should returns 7.4k. Something is wrong!
+cat $1 \
+    | sed 's/window.YTD.tweet.part0 = //g'\
+    | jq '.[].tweet | "\(.created_at | strptime("%a %b %d %H:%M:%S +0000 %Y") | mktime),\(.full_text)"' \
+    | sed -e "s/^\"//g" -e "s/^\([0-9]\{10\},\)/\1\"/g"\
+    | grep -v "RT:"\
+    | grep -v "RT @"\
+    | grep -Ev "^[0-9]{10},@"\
+    | sed 's#\\"#""#g'\
+    | grep -v "last.fm"\
+    | grep -v "blip.fm"\
+    | grep -v "tinyurl.com"\
+    | grep -v "Finggers the App"\
+    | grep -Ev "I (liked)|(saved) a @?YouTube"\
+    | grep -Ev "Adicionei um vídeo como favorito do"\
+    | grep -Ev "Gostei de um vídeo @?YouTube"\
+    | grep -v "I favorited a @YouTube"\
+    | grep -v "Saved on Spotify"\
+    | grep -v "Quadrinhos a Parmegiana - Porque tudo"\
+    | grep -Ev "[0-9]*,\"I'm at .+ http.+"\
+    | grep -Ev "[0-9]*,\"I (just )?unlocked"\
+    | grep -Ev "[0-9]*,\"(Jogando)|(Playing)|(Played) .*\. http.*"\
+    | grep -v "Eu gostei de um vídeo do YouTube"\
+    | sort > $2
+
+sed -i '1s/^/timestamp,tweet\n/' $2
